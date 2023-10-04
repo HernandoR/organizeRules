@@ -1,0 +1,32 @@
+img_ext: &img_ext
+    - .bmp
+    - .gif
+    - .ico
+    - .jpg
+    - .jpeg
+    - .png
+    - .psd
+    - .tif
+    - .tiff
+
+loc_photos: &loc_photos
+    - .
+
+rules:
+    - 
+        name: too-small
+        enabled: true
+        targets: files
+        subfolders: true
+        filters: 
+            - size: "< 120KB"
+            - created
+        locations:
+            - *loc_photos
+        actions:
+            - rename:
+                name: "{created.year}-{created.month}-{created.day}_{counter}{extension}"
+            - move:
+                dest: "./00_too-small/{created.ST}/{created.year}-{created.month}/"
+                on_conflict: "rename_new"
+                rename_template: "{created.year}-{created.month}-{created.day}_{counter}{extension}"
